@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oda imepokelewa | FurniHub</title>
+<style>
+body { margin: 0; padding: 20px; background: #f4f6f1; font-family: Arial, sans-serif; color: #26372c; }
+.card { max-width: 560px; margin: 50px auto; padding: 30px; background: white; border-radius: 18px; text-align: center; box-shadow: 0 5px 25px #00000012; }
+h1 { color: #315c45; }
+button { padding: 14px 20px; border: 0; border-radius: 9px; background: #178348; color: white; font-size: 16px; font-weight: bold; }
+a { color: #315c45; }
+</style>
+</head>
+<body>
+<main class="card">
+<h1>Oda yako imepokelewa!</h1>
+<p>Asante {{ order.customer_name }} kwa kuagiza kupitia FurniHub.</p>
+<p>Namba ya oda: <strong>#{{ order.id }}</strong></p>
+<p>Bidhaa: {{ order.product.name }}</p>
+<p>Idadi: {{ order.quantity }}</p>
+<p>Jumla: TSh {{ order.total_price|floatformat:0 }}</p>
+<p>Hali ya oda: {{ order.get_status_display }}</p>
+<p>Tutawasiliana nawe kuhusu oda yako.</p>
+<a href="https://wa.me/255624462926?text=Habari%20FurniHub%21%20Nimeulizia%20oda%20%23{{ order.id }}%20ya%20{{ order.product.name|urlencode }}.%20Idadi%3A%20{{ order.quantity }}." target="_blank" rel="noopener noreferrer" style="display:block;margin:20px auto;padding:14px;background:#25D366;color:white;border-radius:9px;text-decoration:none;font-weight:bold;">💬 Endelea kupitia WhatsApp</a>
+<a href="/">Rudi kwenye FurniHub</a>
+</main>
+</body>
+</html>

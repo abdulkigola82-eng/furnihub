@@ -1,0 +1,385 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} | FurniHub</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #f8f4ec;
+            color: #211e18;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            padding: 18px 6%;
+            background: #211e18;
+            color: #e4c98d;
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #76551f;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .detail-card {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+            gap: 32px;
+            padding: 28px;
+            background: #fffdf9;
+            border: 1px solid #e6d5b4;
+            border-radius: 20px;
+            box-shadow: 0 8px 28px rgba(23, 22, 20, .08);
+        }
+
+        .image-area {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f4ec;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .image-area img {
+            display: block;
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+        }
+
+        .placeholder {
+            font-size: 90px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 13px;
+            background: #f5ead4;
+            color: #76551f;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 18px 0 12px;
+            font-size: clamp(26px, 4vw, 38px);
+            line-height: 1.2;
+        }
+
+        .price {
+            margin: 18px 0;
+            color: #98702b;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .description {
+            color: #655f55;
+            font-size: 16px;
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .specs {
+            margin: 24px 0;
+            padding: 18px;
+            background: #f8f4ec;
+            border-radius: 12px;
+            line-height: 1.9;
+            overflow-wrap: anywhere;
+        }
+
+        .order-button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border-radius: 11px;
+            background: #c6a15b;
+            color: #171614;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .order-button:hover {
+            background: #e4c98d;
+        }
+
+        footer {
+            padding: 25px;
+            text-align: center;
+            color: #777168;
+        }
+
+        @media (max-width: 700px) {
+            .container { margin: 18px auto; padding: 0 12px; }
+            .detail-card { grid-template-columns: 1fr; gap: 20px; padding: 16px; }
+            .image-area { min-height: 230px; }
+            .image-area img { max-height: 340px; }
+            .price { font-size: 25px; }
+        }
+    
+/* FURNIHUB IMAGE ZOOM CONTROLS */
+.image-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 62px 12px 36px;
+    overflow: hidden;
+    touch-action: pan-y;
+}
+
+.image-area img#zoomableProductImage {
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    transform: scale(1);
+    transform-origin: center center;
+    transition: transform .18s ease;
+    cursor: zoom-in;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.zoom-toolbar {
+    position: absolute;
+    z-index: 5;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 6px;
+}
+
+.zoom-toolbar button {
+    min-width: 38px;
+    min-height: 38px;
+    padding: 7px 10px;
+    border: 1px solid #c6a15b;
+    border-radius: 9px;
+    background: #fffdf9;
+    color: #76551f;
+    font-size: 17px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.zoom-toolbar button:hover {
+    background: #f5ead4;
+}
+
+.zoom-hint {
+    position: absolute;
+    bottom: 3px;
+    left: 8px;
+    right: 8px;
+    margin: 0;
+    color: #777168;
+    font-size: 12px;
+    text-align: center;
+}
+
+.image-area:fullscreen {
+    background: #171614;
+    width: 100%;
+    height: 100%;
+    padding: 75px 15px 35px;
+}
+
+.image-area:fullscreen img#zoomableProductImage {
+    max-height: calc(100vh - 130px);
+}
+
+@media (max-width: 700px) {
+    .image-area {
+        padding: 58px 8px 34px;
+    }
+
+    .image-area img#zoomableProductImage {
+        max-height: 420px;
+    }
+
+    .zoom-toolbar button {
+        min-width: 35px;
+        min-height: 35px;
+        padding: 6px 9px;
+    }
+}
+
+</style>
+</head>
+<body>
+<header>FurniHub</header>
+
+<main class="container">
+    <a class="back" href="{% url 'home' %}">← Rudi kwenye bidhaa</a>
+
+    <article class="detail-card">
+        <!-- FURNIHUB IMAGE ZOOM CONTROLS -->
+        <div class="image-area" id="imageViewer">
+            <div class="zoom-toolbar" aria-label="Vidhibiti vya picha">
+                <button type="button" id="zoomOut" aria-label="Punguza picha">−</button>
+                <button type="button" id="zoomReset" aria-label="Rudisha ukubwa wa kawaida">Rudisha</button>
+                <button type="button" id="zoomIn" aria-label="Kuza picha">＋</button>
+                <button type="button" id="fullscreenImage" aria-label="Fungua picha skrini nzima">⛶</button>
+            </div>
+
+            {% if product.image %}
+                <img
+                    id="zoomableProductImage"
+                    src="{{ product.image.url }}"
+                    alt="{{ product.name }}"
+                    tabindex="0"
+                    title="Tumia vidhibiti kukuza picha"
+                >
+            {% else %}
+                <div class="placeholder" role="img" aria-label="Hakuna picha">🛋️</div>
+            {% endif %}
+            <p class="zoom-hint">Tumia ＋ na − kukuza au kupunguza picha.</p>
+        </div>
+
+        <div>
+            <span class="badge">{{ product.get_category_display }}</span>
+            <h1>{{ product.name }}</h1>
+
+            <div class="price">
+                TSh {{ product.price|floatformat:0|intcomma }}
+            </div>
+
+            <h3>Maelezo ya bidhaa</h3>
+            <p class="description">{{ product.description|linebreaksbr }}</p>
+
+            <div class="specs">
+                <strong>Aina ya samani:</strong> {{ product.get_category_display }}<br>
+                <strong>Vifaa vilivyotumika:</strong>
+                {{ product.material|default:"Haijawekwa bado" }}
+            </div>
+
+            <a class="order-button"
+               href="{% url 'order_product' product.id %}">
+                🛒 Agiza sasa
+            </a>
+        </div>
+    </article>
+</main>
+
+<footer>FurniHub — Samani zinazofaa nyumba yako.</footer>
+
+<script>
+(function () {
+    const viewer = document.getElementById("imageViewer");
+    const img = document.getElementById("zoomableProductImage");
+    if (!viewer || !img) return;
+
+    let zoom = 1;
+    const minZoom = 1;
+    const maxZoom = 3;
+    let pinchStartDistance = 0;
+    let pinchStartZoom = 1;
+
+    function applyZoom() {
+        img.style.transform = `scale(${zoom})`;
+        img.style.cursor = zoom > 1 ? "zoom-out" : "zoom-in";
+    }
+
+    document.getElementById("zoomIn").addEventListener("click", function () {
+        zoom = Math.min(maxZoom, zoom + 0.25);
+        applyZoom();
+    });
+
+    document.getElementById("zoomOut").addEventListener("click", function () {
+        zoom = Math.max(minZoom, zoom - 0.25);
+        applyZoom();
+    });
+
+    document.getElementById("zoomReset").addEventListener("click", function () {
+        zoom = 1;
+        applyZoom();
+    });
+
+    img.addEventListener("click", function () {
+        if (zoom === 1) {
+            zoom = 1.5;
+        } else {
+            zoom = 1;
+        }
+        applyZoom();
+    });
+
+    img.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            img.click();
+        }
+    });
+
+    document.getElementById("fullscreenImage").addEventListener("click", async function () {
+        try {
+            if (!document.fullscreenElement) {
+                await viewer.requestFullscreen();
+            } else {
+                await document.exitFullscreen();
+            }
+        } catch (error) {
+            window.open(img.src, "_blank");
+        }
+    });
+
+    function distance(touches) {
+        const dx = touches[0].clientX - touches[1].clientX;
+        const dy = touches[0].clientY - touches[1].clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    img.addEventListener("touchstart", function (event) {
+        if (event.touches.length === 2) {
+            pinchStartDistance = distance(event.touches);
+            pinchStartZoom = zoom;
+        }
+    }, { passive: true });
+
+    img.addEventListener("touchmove", function (event) {
+        if (event.touches.length === 2 && pinchStartDistance > 0) {
+            const currentDistance = distance(event.touches);
+            zoom = Math.max(
+                minZoom,
+                Math.min(maxZoom, pinchStartZoom * currentDistance / pinchStartDistance)
+            );
+            applyZoom();
+            event.preventDefault();
+        }
+    }, { passive: false });
+
+    img.addEventListener("touchend", function (event) {
+        if (event.touches.length < 2) {
+            pinchStartDistance = 0;
+        }
+    }, { passive: true });
+
+    applyZoom();
+})();
+</script>
+
+</body>
+</html>

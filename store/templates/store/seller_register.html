@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Jisajili kama Muuzaji | FurniHub</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f0e6; margin: 0; padding: 24px 14px; color: #222; }
+        .card { max-width: 480px; margin: 20px auto; background: white; padding: 24px; border-radius: 14px; box-shadow: 0 4px 18px #0001; }
+        h1 { color: #9a742c; font-size: 25px; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input { box-sizing: border-box; width: 100%; padding: 12px; margin-top: 6px; border: 1px solid #ccc; border-radius: 7px; }
+        button { width: 100%; padding: 13px; margin-top: 22px; border: 0; border-radius: 7px; background: #9a742c; color: white; font-weight: bold; font-size: 16px; }
+        .errorlist { color: #b00020; }
+        a { color: #80601e; }
+        .helptext { display: block; font-size: 13px; color: #666; margin-top: 4px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>FurniHub — Usajili wa Muuzaji</h1>
+    <p>Fungua akaunti ya biashara yako. Msimamizi atakagua na kuidhinisha akaunti kabla hujaanza kuuza.</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}
+                <span class="helptext">{{ field.help_text|safe }}</span>
+            {% endif %}
+            {{ field.errors }}
+        {% endfor %}
+
+        <button type="submit">Fungua Akaunti</button>
+    </form>
+
+    <p>Tayari una akaunti? <a href="{% url 'seller_login' %}">Ingia hapa</a></p>
+    <p><a href="{% url 'home' %}">Rudi FurniHub</a></p>
+</div>
+</body>
+</html>

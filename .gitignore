@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+venv/
+.venv/
+env/
+
+# Django secrets and local settings
+.env
+.env.*
+!.env.example
+
+# Database and user uploads
+db.sqlite3
+db.sqlite3-*
+media/
+
+# Collected static files
+staticfiles/
+
+# Local and temporary files
+*.log
+.DS_Store

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agiza bidhaa | FurniHub</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; padding: 20px; background: #f4f6f1; color: #26372c; font-family: Arial, sans-serif; }
+.container { max-width: 620px; margin: 25px auto; padding: 25px; background: white; border-radius: 18px; box-shadow: 0 5px 25px #00000012; }
+h1 { color: #315c45; }
+.product { padding: 14px; margin-bottom: 20px; background: #edf2ec; border-radius: 12px; }
+label { display: block; margin: 15px 0 6px; font-weight: bold; }
+input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccd5cc; border-radius: 8px; font-size: 16px; }
+button { width: 100%; margin-top: 22px; padding: 14px; background: #315c45; color: white; border: 0; border-radius: 9px; font-size: 17px; font-weight: bold; }
+.error { padding: 12px; margin-bottom: 12px; border-radius: 8px; background: #ffe8e8; color: #8c2020; }
+.back { color: #315c45; }
+</style>
+</head>
+<body>
+<main class="container">
+<a class="back" href="/">← Rudi kwenye bidhaa</a>
+<h1>Agiza bidhaa</h1>
+<div class="product">
+<strong>{{ product.name }}</strong><br>
+Bei: TSh {{ product.price|floatformat:0 }}<br>
+{{ product.description }}
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+    <p class="error">{{ message }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="post">
+{% csrf_token %}
+<label for="customer_name">Jina lako kamili</label>
+<input id="customer_name" name="customer_name" maxlength="150" required>
+
+<label for="customer_phone">Namba ya simu</label>
+<input id="customer_phone" name="customer_phone" type="tel" maxlength="20" placeholder="Mfano: 0712345678" required>
+
+<label for="customer_address">Anwani ya kupeleka bidhaa</label>
+<textarea id="customer_address" name="customer_address" rows="3" required></textarea>
+
+<label for="color">Rangi ya sofa</label>
+<select id="color" name="color" required>
+{% for value, label in product_order_colors %}
+<option value="{{ value }}">{{ label }}</option>
+{% endfor %}
+<option value="black">Nyeusi</option>
+<option value="grey">Kijivu</option>
+<option value="brown">Kahawia</option>
+<option value="cream">Cream</option>
+<option value="blue">Bluu</option>
+<option value="green">Kijani</option>
+<option value="other">Rangi nyingine</option>
+</select>
+
+<label for="fabric">Aina ya kitambaa</label>
+<input id="fabric" name="fabric" maxlength="100" placeholder="Mfano: Velvet" required>
+
+<label for="quantity">Idadi ya sofa</label>
+<input id="quantity" name="quantity" type="number" min="1" max="100" value="1" required>
+
+<label for="notes">Maelezo ya ziada (si lazima)</label>
+<textarea id="notes" name="notes" rows="3"></textarea>
+
+<button type="submit">Tuma oda</button>
+</form>
+</main>
+</body>
+</html>

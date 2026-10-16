@@ -1,0 +1,883 @@
+<!DOCTYPE html><html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FurniHub | Samani za Nyumbani</title>
+    <style>
+        * { box-sizing: border-box; }    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f7f6f2;
+        color: #24332b;
+    }
+
+    header {
+        background: #183d32;
+        color: white;
+        padding: 18px 6%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .logo { font-size: 27px; font-weight: bold; }
+    .logo span { color: #e9bd78; }
+
+    header a {
+        color: white;
+        text-decoration: none;
+        margin-left: 16px;
+        font-size: 14px;
+    }
+
+    .hero {
+        padding: 55px 6%;
+        background: linear-gradient(120deg, #e7e5d9, #f7f1e6);
+    }
+
+    .hero h1 {
+        font-size: clamp(32px, 6vw, 52px);
+        max-width: 650px;
+        margin: 0 0 18px;
+        line-height: 1.12;
+    }
+
+    .hero p {
+        color: #58655c;
+        max-width: 520px;
+        line-height: 1.7;
+    }
+
+    .search {
+        display: flex;
+        gap: 8px;
+        max-width: 520px;
+        margin-top: 24px;
+    }
+
+    .search input {
+        flex: 1;
+        min-width: 0;
+        padding: 14px;
+        border: 1px solid #d5d8d0;
+        border-radius: 8px;
+        font-size: 15px;
+    }
+
+    button, .button {
+        background: #183d32;
+        color: white;
+        border: none;
+        padding: 13px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    section { padding: 35px 6%; }
+
+    .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .categories {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-top: 20px;
+    }
+
+    .category {
+        background: white;
+        padding: 20px 10px;
+        text-align: center;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px #172b170b;
+        font-weight: bold;
+    }
+
+    .category div { font-size: 30px; margin-bottom: 8px; }
+
+    .products {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 20px;
+    }
+
+    .product {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px #172b1710;
+    }
+
+    .product img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+        background: #e4e3dc;
+        transition: transform 0.35s ease;
+    }
+
+    .product {
+        overflow: hidden;
+        border-radius: 16px;
+        background: #fff;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .product:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.13);
+    }
+
+    .product:hover img {
+        transform: scale(1.035);
+    }
+
+    .product-placeholder {
+        width: 100%;
+        height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8e8dd;
+        font-size: 58px;
+    }
+
+
+    .details-button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 9px;
+        background: #315c45;
+        color: white;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .details-button:hover { background: #244532; }
+
+    .product-details {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 10px;
+        background: #f4f6f1;
+        font-size: 13px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .product-details p { margin: 6px 0; }
+
+    .order-button {
+        display: block;
+        margin-top: 12px;
+        padding: 13px;
+        border-radius: 9px;
+        background: #178348;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background 0.2s ease;
+    }
+
+    .order-button:hover {
+        background: #116637;
+    }
+
+    .product-info { padding: 15px; }
+    .badge { font-size: 12px; color: #52735e; }
+    .product h3 { font-size: 17px; margin: 9px 0; }
+    .description { color: #727a73; font-size: 13px; line-height: 1.5; }
+    .price { font-weight: bold; font-size: 18px; margin: 13px 0; }
+
+    .seller {
+        margin: 15px 6% 40px;
+        padding: 30px;
+        background: #e8e8dd;
+        border-radius: 14px;
+    }
+
+    footer {
+        background: #183d32;
+        color: white;
+        padding: 25px 6%;
+        font-size: 13px;
+        line-height: 1.8;
+    }
+
+    @media (max-width: 800px) {
+        .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .categories { grid-template-columns: repeat(2, 1fr); }
+        header nav { width: 100%; }
+        header a { margin: 0 12px 0 0; }
+    }
+
+    @media (max-width: 380px) {
+        .products { grid-template-columns: 1fr; }
+        .search { flex-direction: column; }
+    }
+
+
+/* FurniHub modern visual refresh */
+:root {
+    --fh-green: #28543d;
+    --fh-green-dark: #193b2a;
+    --fh-cream: #f7f5ef;
+    --fh-white: #ffffff;
+    --fh-text: #25352b;
+    --fh-muted: #68746b;
+    --fh-border: #e4e8e1;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--fh-cream);
+    color: var(--fh-text);
+}
+
+header {
+    box-shadow: 0 3px 18px rgba(25, 59, 42, 0.07);
+}
+
+nav a {
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+nav a:hover {
+    color: var(--fh-green);
+}
+
+button, .btn, .button {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+button:hover, .btn:hover, .button:hover {
+    transform: translateY(-2px);
+}
+
+.products {
+    gap: 24px;
+}
+
+.product {
+    overflow: hidden;
+    border: 1px solid var(--fh-border);
+    border-radius: 18px;
+    background: var(--fh-white);
+    box-shadow: 0 5px 20px rgba(35, 55, 40, 0.055);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(35, 55, 40, 0.12);
+}
+
+.product img {
+    transition: transform 0.35s ease;
+}
+
+.product:hover img {
+    transform: scale(1.025);
+}
+
+.product-info {
+    padding: 18px;
+}
+
+.product-info h3 {
+    color: var(--fh-green-dark);
+    line-height: 1.4;
+}
+
+.price {
+    color: var(--fh-green);
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.badge {
+    border-radius: 30px;
+    padding: 5px 10px;
+    background: #eaf1e9;
+    color: var(--fh-green);
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.order-button {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(40, 84, 61, 0.14);
+}
+
+.product-placeholder {
+    background: linear-gradient(135deg, #e9eee6, #f7f5ef);
+}
+
+@media (max-width: 600px) {
+    .products {
+        gap: 15px;
+    }
+
+    .product-info {
+        padding: 13px;
+    }
+
+    .product-info h3 {
+        font-size: 1rem;
+    }
+}
+
+
+
+
+/* FURNIHUB LUXURY THEME */
+:root {
+    --lux-black: #171614;
+    --lux-dark: #22201c;
+    --lux-gold: #c6a15b;
+    --lux-gold-light: #e4c98d;
+    --lux-cream: #f7f3eb;
+    --lux-white: #ffffff;
+    --lux-text: #292720;
+    --lux-muted: #777168;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--lux-cream);
+    color: var(--lux-text);
+}
+
+header {
+    background: var(--lux-black) !important;
+    color: var(--lux-white);
+    border-bottom: 1px solid rgba(198, 161, 91, 0.35);
+    box-shadow: 0 5px 22px rgba(0, 0, 0, 0.12);
+}
+
+header a,
+nav a {
+    color: var(--lux-white);
+    transition: color 0.2s ease;
+}
+
+header a:hover,
+nav a:hover {
+    color: var(--lux-gold-light);
+}
+
+.hero {
+    background: linear-gradient(135deg, #171614 0%, #30291f 58%, #51402a 100%) !important;
+    color: var(--lux-white);
+    border-bottom: 3px solid var(--lux-gold);
+}
+
+.hero h1 {
+    color: var(--lux-gold-light);
+    letter-spacing: 0.4px;
+}
+
+.hero p {
+    color: #eee7da;
+}
+
+button,
+.btn,
+.button {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+button:hover,
+.btn:hover,
+.button:hover {
+    transform: translateY(-2px);
+}
+
+.products {
+    gap: 24px;
+}
+
+.product {
+    overflow: hidden;
+    background: var(--lux-white);
+    border: 1px solid #e6dece;
+    border-radius: 15px;
+    box-shadow: 0 5px 22px rgba(31, 26, 18, 0.07);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 32px rgba(31, 26, 18, 0.14);
+}
+
+.product img {
+    transition: transform 0.35s ease;
+}
+
+.product:hover img {
+    transform: scale(1.025);
+}
+
+.product-info {
+    padding: 18px;
+}
+
+.product-info h3 {
+    color: var(--lux-black);
+    line-height: 1.4;
+}
+
+.price {
+    color: #9a722b !important;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+.badge {
+    display: inline-block;
+    background: #f4ead5;
+    color: #79571f;
+    border-radius: 30px;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.order-button {
+    display: block;
+    background: var(--lux-gold) !important;
+    color: var(--lux-black) !important;
+    border: 1px solid var(--lux-gold);
+    border-radius: 9px;
+    padding: 13px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 800;
+    box-shadow: 0 4px 12px rgba(140, 101, 35, 0.15);
+}
+
+.order-button:hover {
+    background: var(--lux-gold-light) !important;
+}
+
+.details-button {
+    border-radius: 9px;
+}
+
+.product-placeholder {
+    background: linear-gradient(135deg, #eee6d7, #faf7f0);
+}
+
+footer {
+    background: var(--lux-black) !important;
+    color: #eee7da;
+    border-top: 3px solid var(--lux-gold);
+}
+
+footer a {
+    color: var(--lux-gold-light);
+}
+
+@media (max-width: 600px) {
+    .products {
+        gap: 15px;
+    }
+
+    .product-info {
+        padding: 13px;
+    }
+
+    .product-info h3 {
+        font-size: 1rem;
+    }
+}
+
+
+
+/* FURNIHUB LUXURY HERO IMAGE */
+.hero {
+    display: grid !important;
+    grid-template-columns: 1fr 1.1fr !important;
+    align-items: center !important;
+    gap: 32px !important;
+    padding: 48px 6% !important;
+    min-height: 360px;
+    background: linear-gradient(120deg, #171614, #30291f 65%, #51402a) !important;
+    color: #fff !important;
+    border-bottom: 3px solid #c6a15b;
+    border-radius: 0 0 22px 22px;
+}
+.hero img {
+    width: 100% !important;
+    max-height: 390px;
+    object-fit: cover;
+    display: block;
+    border-radius: 18px;
+    border: 2px solid #c6a15b;
+    box-shadow: 0 16px 40px rgba(0,0,0,.35);
+}
+.hero h1 {
+    color: #e4c98d !important;
+    font-size: clamp(28px, 4vw, 48px);
+}
+.hero p {
+    color: #f7f3eb !important;
+    line-height: 1.8;
+}
+@media (max-width: 700px) {
+    .hero {
+        grid-template-columns: 1fr !important;
+        padding: 28px 5% !important;
+        gap: 20px !important;
+    }
+    .hero img {
+        max-height: 300px;
+    }
+}
+
+
+/* FURNIHUB FULL BACKGROUND SOFA HERO */
+.hero-background {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    min-height: 440px !important;
+    padding: 55px 6% !important;
+    box-sizing: border-box;
+    background:
+        linear-gradient(90deg, rgba(18,17,15,.92) 0%,
+        rgba(18,17,15,.70) 48%, rgba(18,17,15,.12) 100%),
+        url('/media/home.png') center 55% / cover no-repeat !important;
+    border-bottom: 3px solid #c6a15b;
+    border-radius: 0 0 22px 22px;
+}
+.hero-background .hero-content {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 560px);
+}
+.hero-background h1 {
+    color: #e4c98d !important;
+    font-size: clamp(32px, 5vw, 54px) !important;
+    line-height: 1.15;
+    margin-bottom: 18px;
+}
+.hero-background p {
+    color: #fff !important;
+    font-size: 17px;
+    line-height: 1.8;
+}
+.hero-background .search {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.hero-background .search input {
+    flex: 1 1 180px;
+    min-width: 0;
+}
+.hero-background .search button {
+    background: #c6a15b;
+    color: #171614;
+    border: none;
+    font-weight: bold;
+}
+@media (max-width: 600px) {
+    .hero-background {
+        min-height: 400px !important;
+        padding: 32px 20px !important;
+        background-position: center !important;
+    }
+    .hero-background .hero-content {
+        width: 100%;
+    }
+}
+
+
+/* FURNIHUB PREMIUM PRODUCT CARDS */
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    align-items: stretch;
+    padding: 10px 5% 35px;
+}
+
+.product {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: #fffdf9 !important;
+    border: 1px solid #e6d5b4 !important;
+    border-radius: 18px !important;
+    box-shadow: 0 6px 22px rgba(23, 22, 20, 0.09) !important;
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(23, 22, 20, 0.16) !important;
+}
+
+.product img {
+    display: block;
+    width: 100%;
+    height: 235px !important;
+    object-fit: cover;
+    background: #f2ede4;
+    transition: transform .35s ease;
+}
+
+.product:hover img {
+    transform: scale(1.035);
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 18px !important;
+}
+
+.product-info h3,
+.product h3 {
+    color: #211e18 !important;
+    font-size: 18px;
+    line-height: 1.45;
+    margin: 8px 0 10px;
+}
+
+.description {
+    color: #777168 !important;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.price {
+    color: #98702b !important;
+    font-size: 21px !important;
+    font-weight: 800;
+    margin: 14px 0 !important;
+}
+
+.badge {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 5px 11px;
+    background: #f5ead4 !important;
+    color: #76551f !important;
+    border-radius: 30px;
+    font-size: 12px;
+}
+
+.order-button {
+    display: block;
+    margin-top: auto !important;
+    padding: 13px 15px !important;
+    background: #c6a15b !important;
+    color: #171614 !important;
+    border: 1px solid #c6a15b !important;
+    border-radius: 10px !important;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 800;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.order-button:hover {
+    background: #e4c98d !important;
+    transform: translateY(-1px);
+}
+
+.details-button {
+    border: 1px solid #c6a15b !important;
+    border-radius: 10px !important;
+    color: #5b451f !important;
+}
+
+.product-placeholder {
+    background: linear-gradient(135deg, #eee6d7, #faf7f0) !important;
+}
+
+@media (max-width: 600px) {
+    .products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        padding: 8px 12px 25px;
+    }
+
+    .product {
+        border-radius: 13px !important;
+    }
+
+    .product img {
+        height: 155px !important;
+    }
+
+    .product-info {
+        padding: 12px !important;
+    }
+
+    .product-info h3,
+    .product h3 {
+        font-size: 15px;
+    }
+
+    .price {
+        font-size: 17px !important;
+    }
+
+    .order-button {
+        padding: 11px 8px !important;
+        font-size: 13px;
+    }
+}
+
+</style>
+
+</head>
+<body><header>
+    <div class="logo">Furni<span>Hub</span></div>
+    <nav>
+        <a href="/">Nyumbani</a>
+        <a href="#bidhaa">Bidhaa</a>
+        <a href="#wauzaji">Kwa wauzaji</a>
+    </nav>
+</header><main>
+    <section class="hero hero-background">
+        <div class="hero-content">
+            <h1>Samani nzuri, nyumba yenye mvuto.</h1>
+            <p>
+                Karibu FurniHub, soko la samani linalowaunganisha
+                wanunuzi na wauzaji wa samani nchini Tanzania.
+            </p>
+            <form class="search" onsubmit="return searchProducts(event)">
+                <input id="searchInput" type="search"
+                       placeholder="Tafuta sofa, kitanda, meza...">
+                <button type="submit">Tafuta</button>
+            </form>
+        </div>
+    </section>
+
+    <div class="categories">
+        <div class="category"><div>🛋️</div>Sofa</div>
+        <div class="category"><div>🛏️</div>Vitanda</div>
+        <div class="category"><div>🪑</div>Viti</div>
+        <div class="category"><div>🪵</div>Meza</div>
+    </div>
+</section>
+
+<section id="bidhaa">
+    <div class="section-heading">
+        <h2>Samani zinazopendekezwa</h2>
+        <span>Chagua inayokufaa</span>
+    </div>
+
+    <div class="products" id="productGrid">
+        {% load humanize %}
+{% for product in products %}
+        <article class="product"
+                 data-search="{{ product.name }} {{ product.category }} {{ product.description }}">
+            {% if product.image %}
+            <img src="{{ product.image.url }}"
+                 alt="{{ product.name }}"
+                 loading="lazy">
+            {% else %}
+            <div class="product-placeholder" role="img" aria-label="Picha ya {{ product.name }}">🛋️</div>
+            {% endif %}
+
+            <div class="product-info">
+                <span class="badge">{{ product.category }}</span>
+                <h3>{{ product.name }}</h3>
+                <p class="description">{{ product.description }}</p>
+                <div class="price">TSh {{ product.price|floatformat:0|intcomma }}</div>
+                <button type="button" class="details-button"
+                        onclick="showProductDetails(this)">
+                    Angalia bidhaa
+                </button>
+                <div class="product-details" hidden>
+                    <p><strong>Jina:</strong> {{ product.name }}</p>
+                    <p><strong>Jamii:</strong> {{ product.get_category_display }}</p>
+                    <p><strong>Bei:</strong> TSh {{ product.price|floatformat:0|intcomma }}</p>
+                    <p><strong>Vifaa vilivyotumika:</strong> {{ product.material|default:"Haijawekwa bado" }}</p>
+                    <p><strong>Maelezo:</strong> {{ product.description }}</p>
+                </div>
+                <a class="order-button" href="{% url "order_product" product.id %}">🛒 Agiza sasa</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    <p id="noResults" hidden>Hakuna bidhaa iliyopatikana kwa utafutaji huo.</p>
+</section>
+
+<section class="seller" id="wauzaji">
+    <h2>Unatengeneza au kuuza samani?</h2>
+    <p>Jiunge na FurniHub ili kuonyesha samani zako kwa wateja wengi zaidi.</p>
+    <a class="button" href="/admin/">Sehemu ya usimamizi</a>
+</section>
+
+</main><footer>
+    <strong>FurniHub</strong><br>
+    Soko la samani za nyumbani nchini Tanzania.<br>
+    Bei zilizoonyeshwa ni za mfano kwa ajili ya majaribio.
+</footer><script>
+    function searchProducts(event) {
+        event.preventDefault();
+
+        const query = document.getElementById("searchInput")
+            .value.trim().toLowerCase();
+
+        const products = document.querySelectorAll(".product");
+        let visibleCount = 0;
+
+        products.forEach(product => {
+            const text = product.dataset.search.toLowerCase();
+            const matches = text.includes(query);
+
+            product.hidden = !matches;
+
+            if (matches) visibleCount++;
+        });
+
+        document.getElementById("noResults").hidden = visibleCount !== 0;
+        document.getElementById("bidhaa").scrollIntoView({
+            behavior: "smooth"
+        });
+
+        return false;
+    }
+</script>
+<script>
+function showProductDetails(button) {
+    const details = button.nextElementSibling;
+    details.hidden = !details.hidden;
+    button.textContent = details.hidden ? "Angalia bidhaa" : "Ficha maelezo";
+}
+</script>
+</body>
+</html>
